@@ -69,11 +69,6 @@ def game_over():
 		score = 0
 		menu = True
 
-def lose_point(mouse_pos, event):
-	global score
-	if event.type == pygame.MOUSEBUTTONDOWN:
-		pass
-
 clock = pygame.time.Clock()
 seconds = 0
 max_seconds = 10
