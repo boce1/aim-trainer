@@ -4,10 +4,10 @@ import target
 WIDTH, HEIGHT = 800, 600
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
-GREEN = (0, 240, 0)
+GREEN = (30, 240, 100)
 BLACK = (0, 0, 0)
 
-window = pygame.display.set_mode((WIDTH, HEIGHT))
+window = pygame.display.set_mode((WIDTH, HEIGHT), pygame.RESIZABLE)
 pygame.display.set_caption("Aim Trainer")
 
 pygame.font.init()
@@ -19,12 +19,21 @@ t = target.Target(WIDTH // 2, HEIGHT // 2, RED, 50)
 
 def draw_crosshair():
 	lenght = 20
+	gap = 5
 	x, y = mouse_pos
-	pygame.draw.line(window, GREEN, (x - lenght, y), (x + lenght, y), 3)
-	pygame.draw.line(window, GREEN, (x, y - lenght), (x, lenght + y), 3)
-	pygame.draw.line(window, BLACK, (x - lenght, y), (x + lenght, y), 1)
-	pygame.draw.line(window, BLACK, (x, y - lenght), (x, lenght + y), 1)
+	#pygame.draw.line(window, GREEN, (x - lenght, y), (x + lenght, y), 3)
+	#pygame.draw.line(window, GREEN, (x, y - lenght), (x, lenght + y), 3)
+	#pygame.draw.line(window, BLACK, (x - lenght // 2, y), (x + lenght // 2, y), 1)
+	#pygame.draw.line(window, BLACK, (x, y - lenght // 2), (x, lenght // 2 + y), 1)
+	pygame.draw.line(window, GREEN, (x - lenght, y), (x - gap, y), 3)
+	pygame.draw.line(window, GREEN, (x + gap, y), (x + lenght, y), 3)
+	pygame.draw.line(window, GREEN, (x, y - lenght), (x, y - gap), 3)
+	pygame.draw.line(window, GREEN, (x, y + lenght), (x, y + gap), 3)
 
+	pygame.draw.line(window, BLACK, (x - lenght + gap, y), (x - gap, y), 1)
+	pygame.draw.line(window, BLACK, (x + gap, y), (x + lenght - gap, y), 1)
+	pygame.draw.line(window, BLACK, (x, y - lenght + gap), (x, y - gap), 1)
+	pygame.draw.line(window, BLACK, (x, y + lenght - gap), (x, y + gap), 1)
 
 def display_text(score, seconds):
 	txt_score = font.render(f"score : {score}", True, (0, 0, 0))
@@ -63,6 +72,10 @@ def game_over():
 		score = 0
 		menu = True
 
+def lose_point(mouse_pos, event):
+	global score
+	if event.type == pygame.MOUSEBUTTONDOWN:
+		pass
 
 clock = pygame.time.Clock()
 seconds = 0
@@ -76,8 +89,8 @@ while run:
 
 	if not menu:
 		seconds += 1 / FPS
-	mouse_pos = pygame.mouse.get_pos()
 
+	mouse_pos = pygame.mouse.get_pos()
 
 	draw()
 	
@@ -88,12 +101,25 @@ while run:
 		if event.type == pygame.QUIT:
 			run = False
 
-		if t.is_target_killed(mouse_pos[0], mouse_pos[1], event):
-			t.x, t.y = target.util_target.randomize_cords(WIDTH, HEIGHT, t.radius)
-			score += 1
 
 		if menu and (event.type == pygame.MOUSEBUTTONDOWN or event.type == pygame.KEYDOWN):
 			menu = False
+
+		elif t.is_target_killed(mouse_pos[0], mouse_pos[1], event):
+			t.radius = target.util_target.randomize_size(WIDTH, HEIGHT, t.radius)
+			t.x, t.y = target.util_target.randomize_cords(WIDTH, HEIGHT, t.radius)
+			score += 1
+
+		elif t.is_target_missed(mouse_pos[0], mouse_pos[1], event):
+			score -= 1
+
+		if event.type == pygame.VIDEORESIZE:
+			WIDTH, HEIGHT = window.get_size()
+			t.radius = target.util_target.randomize_size(WIDTH, HEIGHT, t.radius)
+			#t.x, t.y = target.util_target.randomize_cords(WIDTH, HEIGHT, t.radius)
+			t.x = WIDTH // 2 - t.radius // 2
+			t.y = HEIGHT // 2 - t.radius // 2
+
 
 
 	#print(int(seconds))
