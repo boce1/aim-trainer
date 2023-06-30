@@ -10,7 +10,15 @@ class Target:
 		self.radius = radius
 
 	def draw(self, win):
-		pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+		width = self.radius // 5
+		i = 0
+		for gap in range(0, self.radius + 1, width):
+			if i % 2 == 0:
+				pygame.draw.circle(win, self.color, (self.x, self.y), self.radius - gap)
+			else:
+				pygame.draw.circle(win, (255, 255, 255), (self.x, self.y), self.radius - gap)
+			i += 1
+
 		pygame.draw.circle(win, (0, 0, 0), (self.x, self.y), self.radius, 1)
 
 	def is_mouse_inside(self, mouse_x, mouse_y):

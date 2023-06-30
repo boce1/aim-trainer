@@ -21,10 +21,7 @@ def draw_crosshair():
 	lenght = 20
 	gap = 5
 	x, y = mouse_pos
-	#pygame.draw.line(window, GREEN, (x - lenght, y), (x + lenght, y), 3)
-	#pygame.draw.line(window, GREEN, (x, y - lenght), (x, lenght + y), 3)
-	#pygame.draw.line(window, BLACK, (x - lenght // 2, y), (x + lenght // 2, y), 1)
-	#pygame.draw.line(window, BLACK, (x, y - lenght // 2), (x, lenght // 2 + y), 1)
+
 	pygame.draw.line(window, GREEN, (x - lenght, y), (x - gap, y), 3)
 	pygame.draw.line(window, GREEN, (x + gap, y), (x + lenght, y), 3)
 	pygame.draw.line(window, GREEN, (x, y - lenght), (x, y - gap), 3)
@@ -120,7 +117,4 @@ while run:
 			t.x = WIDTH // 2 - t.radius // 2
 			t.y = HEIGHT // 2 - t.radius // 2
 
-
-
-	#print(int(seconds))
 pygame.quit()

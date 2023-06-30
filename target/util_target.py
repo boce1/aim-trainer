@@ -6,11 +6,13 @@ def randomize_cords(width, height, radius):
 	return (x, y)
 
 def randomize_size(width, height, radius):
-	min_size = 20
-	max_size = 30
+	min_size = 0.5
+	max_size = 2
 	minimum = min(width, height)
 	maximum = max(width, height)
-	ratio = maximum / minimum
-	left = int(min_size * ratio)
-	right = int(max_size * ratio)
+
+	coef = minimum // 20
+	left = int(min_size * coef)
+	right = int(max_size * coef)
+
 	return randint(left, right)
