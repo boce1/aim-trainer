@@ -73,7 +73,6 @@ def game_over():
 		score = 0
 		menu = True
 
-
 clock = pygame.time.Clock()
 seconds = 0
 max_seconds = 10
@@ -88,6 +87,7 @@ while run:
 		seconds += 1 / FPS
 
 	mouse_pos = pygame.mouse.get_pos()
+
 	draw()
 	game_over()
 
