@@ -26,15 +26,18 @@ class Target:
 		y_distance = abs(self.y - mouse_y)
 		return sqrt(x_distance**2 + y_distance**2) <= self.radius
 
+	def is_mouse_pressed(self, event):
+		return event.type == pygame.MOUSEBUTTONDOWN and event.button == 1
+
 	def is_target_killed(self, mouse_x, mouse_y, event):
-		if event.type == pygame.MOUSEBUTTONDOWN:
+		if self.is_mouse_pressed(event):
 			if self.is_mouse_inside(mouse_x, mouse_y):
 				return True
 
 		return False
 
 	def is_target_missed(self, mouse_x, mouse_y, event):
-		if event.type == pygame.MOUSEBUTTONDOWN:
+		if self.is_mouse_pressed(event):
 			if not self.is_mouse_inside(mouse_x, mouse_y):
 				return True
 		return False

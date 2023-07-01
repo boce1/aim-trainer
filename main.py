@@ -13,6 +13,10 @@ pygame.display.set_caption("Aim Trainer")
 pygame.font.init()
 font = pygame.font.SysFont("Consolas", 23)
 
+pygame.mixer.init()
+pygame.mixer.music.set_volume(0.3)
+gun_sound = pygame.mixer.Sound("sound/gunshot.wav")
+
 pygame.mouse.set_cursor((8,8),(0,0),(0,0,0,0,0,0,0,0),(0,0,0,0,0,0,0,0))
 
 t = target.Target(WIDTH // 2, HEIGHT // 2, RED, 50)
@@ -69,10 +73,6 @@ def game_over():
 		score = 0
 		menu = True
 
-def lose_point(mouse_pos, event):
-	global score
-	if event.type == pygame.MOUSEBUTTONDOWN:
-		pass
 
 clock = pygame.time.Clock()
 seconds = 0
@@ -88,10 +88,7 @@ while run:
 		seconds += 1 / FPS
 
 	mouse_pos = pygame.mouse.get_pos()
-
 	draw()
-	
-
 	game_over()
 
 	for event in pygame.event.get():
@@ -106,14 +103,15 @@ while run:
 			t.radius = target.util_target.randomize_size(WIDTH, HEIGHT, t.radius)
 			t.x, t.y = target.util_target.randomize_cords(WIDTH, HEIGHT, t.radius)
 			score += 1
+			pygame.mixer.Sound.play(gun_sound)
 
 		elif t.is_target_missed(mouse_pos[0], mouse_pos[1], event):
 			score -= 1
+			pygame.mixer.Sound.play(gun_sound)
 
 		if event.type == pygame.VIDEORESIZE:
 			WIDTH, HEIGHT = window.get_size()
 			t.radius = target.util_target.randomize_size(WIDTH, HEIGHT, t.radius)
-			#t.x, t.y = target.util_target.randomize_cords(WIDTH, HEIGHT, t.radius)
 			t.x = WIDTH // 2 - t.radius // 2
 			t.y = HEIGHT // 2 - t.radius // 2
 

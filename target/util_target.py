@@ -9,7 +9,6 @@ def randomize_size(width, height, radius):
 	min_size = 0.5
 	max_size = 2
 	minimum = min(width, height)
-	maximum = max(width, height)
 
 	coef = minimum // 20
 	left = int(min_size * coef)
